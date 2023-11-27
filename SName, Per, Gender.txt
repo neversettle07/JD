@@ -1,0 +1,202 @@
+2)//Write a Java program to accept the details of Student (RNo, SName, Per, Gender, Class) and store into the database.
+
+databse commands-
+
+create database student;
+CREATE TABLE studentinfoapp(
+  roll_number` varchar(10) DEFAULT NULL,
+  name varchar(200) DEFAULT NULL,
+  class varchar(100) DEFAULT NULL,
+  marks varchar(10) DEFAULT NULL,
+  age varchar(10) DEFAULT NULL,
+  gender varchar(10) DEFAULT NULL
+)
+--------------------
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class StudentInfoApp extends JFrame {
+
+    private JTextField rollNumberField;
+    private JTextArea resultArea;
+
+    public StudentInfoApp() {
+        super("Student Information App");
+
+        // Initialize UI components
+        rollNumberField = new JTextField(10);
+        resultArea = new JTextArea(10, 30);
+        resultArea.setEditable(false);
+
+        JButton fetchButton = new JButton("Fetch Information");
+        fetchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fetchStudentInformation();
+            }
+        });
+
+        // Set up the layout
+        setLayout(new FlowLayout());
+
+        add(new JLabel("Enter Roll Number: "));
+        add(rollNumberField);
+        add(fetchButton);
+        add(new JScrollPane(resultArea));
+
+        // Set frame properties
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void fetchStudentInformation() {
+        String rollNumber = rollNumberField.getText().trim();
+
+        if (rollNumber.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a roll number", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Database connection parameters
+        String url = "jdbc:mysql://localhost:3306/practice";
+        String username = "root";
+        String password = "shivam";
+
+        try {
+            // Load JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establish the connection
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Prepare SQL query
+            String query = "SELECT name, class, marks, age, gender FROM StudentInfoApp WHERE roll_number = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, rollNumber);
+
+            // Execute the query
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Display the result
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String studentClass = resultSet.getString("class");
+                int marks = resultSet.getInt("marks");
+                int age = resultSet.getInt("age");
+                String gender = resultSet.getString("gender");
+
+                String result = "Name: " + name + "\nClass: " + studentClass + "\nMarks: " + marks +
+                        "\nAge: " + age + "\nGender: " + gender;
+
+                resultArea.setText(result);
+            } else {
+                resultArea.setText("Student not found for roll number: " + rollNumber);
+            }
+
+            // Close the resources
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error connecting to the database", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new StudentInfoApp());
+    }
+}
+
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+B) Demonstration of Priority Queue
+
+class PriorityQueue {
+  constructor() {
+    this.elements = [];
+  }
+
+  enqueue(element, priority) {
+    const queueElement = { element, priority };
+    let added = false;
+
+    for (let i = 0; i < this.elements.length; i++) {
+      if (priority < this.elements[i].priority) {
+        this.elements.splice(i, 0, queueElement);
+        added = true;
+        break;
+      }
+    }
+
+    if (!added) {
+      this.elements.push(queueElement);
+    }
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return "Queue is empty";
+    }
+
+    return this.elements.shift().element;
+  }
+
+  front() {
+    if (this.isEmpty()) {
+      return "Queue is empty";
+    }
+
+    return this.elements[0].element;
+  }
+
+  isEmpty() {
+    return this.elements.length === 0;
+  }
+
+  size() {
+    return this.elements.length;
+  }
+
+  print() {
+    console.log("Priority Queue:");
+    for (let i = 0; i < this.elements.length; i++) {
+      console.log(`${this.elements[i].element} - Priority: ${this.elements[i].priority}`);
+    }
+  }
+}
+
+// Example usage:
+const priorityQueue = new PriorityQueue();
+
+priorityQueue.enqueue("Task 1", 2);
+priorityQueue.enqueue("Task 2", 1);
+priorityQueue.enqueue("Task 3", 3);
+
+priorityQueue.print();
+console.log("Front of the queue:", priorityQueue.front());
+
+console.log("Dequeue:", priorityQueue.dequeue());
+priorityQueue.print();
+
+
+
+
+
+
+
+
+
+
+
+

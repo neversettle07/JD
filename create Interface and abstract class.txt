@@ -1,0 +1,166 @@
+A) Implement a java package and use a created class in other program. Also write java program to 
+create Interface and abstract class 
+
+
+
+
+
+
+
+
+
+
+
+
+
+==============================================================================================
+B) Practical based on binary search tree implementation with its operations
+
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(data) {
+    const newNode = new Node(data);
+
+    if (this.root === null) {
+      this.root = newNode;
+    } else {
+      this.insertNode(this.root, newNode);
+    }
+  }
+
+  insertNode(node, newNode) {
+    if (newNode.data < node.data) {
+      if (node.left === null) {
+        node.left = newNode;
+      } else {
+        this.insertNode(node.left, newNode);
+      }
+    } else {
+      if (node.right === null) {
+        node.right = newNode;
+      } else {
+        this.insertNode(node.right, newNode);
+      }
+    }
+  }
+
+  remove(data) {
+    this.root = this.removeNode(this.root, data);
+  }
+
+  removeNode(node, key) {
+    if (node === null) {
+      return null;
+    }
+
+    if (key < node.data) {
+      node.left = this.removeNode(node.left, key);
+      return node;
+    } else if (key > node.data) {
+      node.right = this.removeNode(node.right, key);
+      return node;
+    } else {
+      if (node.left === null) {
+        return node.right;
+      } else if (node.right === null) {
+        return node.left;
+      }
+
+      node.data = this.findMinNode(node.right).data;
+      node.right = this.removeNode(node.right, node.data);
+      return node;
+    }
+  }
+
+  findMinNode(node) {
+    while (node.left !== null) {
+      node = node.left;
+    }
+    return node;
+  }
+
+  search(data) {
+    return this.searchNode(this.root, data);
+  }
+
+  searchNode(node, data) {
+    if (node === null) {
+      return false;
+    }
+
+    if (data < node.data) {
+      return this.searchNode(node.left, data);
+    } else if (data > node.data) {
+      return this.searchNode(node.right, data);
+    } else {
+      return true;
+    }
+  }
+
+  inOrderTraversal(callback) {
+    this.inOrderTraversalNode(this.root, callback);
+  }
+
+  inOrderTraversalNode(node, callback) {
+    if (node !== null) {
+      this.inOrderTraversalNode(node.left, callback);
+      callback(node.data);
+      this.inOrderTraversalNode(node.right, callback);
+    }
+  }
+
+  preOrderTraversal(callback) {
+    this.preOrderTraversalNode(this.root, callback);
+  }
+
+  preOrderTraversalNode(node, callback) {
+    if (node !== null) {
+      callback(node.data);
+      this.preOrderTraversalNode(node.left, callback);
+      this.preOrderTraversalNode(node.right, callback);
+    }
+  }
+
+  postOrderTraversal(callback) {
+    this.postOrderTraversalNode(this.root, callback);
+  }
+
+  postOrderTraversalNode(node, callback) {
+    if (node !== null) {
+      this.postOrderTraversalNode(node.left, callback);
+      this.postOrderTraversalNode(node.right, callback);
+      callback(node.data);
+    }
+  }
+}
+
+// Example usage:
+const bst = new BinarySearchTree();
+bst.insert(10);
+bst.insert(5);
+bst.insert(15);
+bst.insert(2);
+bst.insert(7);
+bst.insert(12);
+bst.insert(20);
+
+console.log("In-order traversal:");
+bst.inOrderTraversal((data) => console.log(data));
+
+console.log("\nRemoving 10:");
+bst.remove(10);
+bst.inOrderTraversal((data) => console.log(data));
+
+console.log("\nSearching for 12:", bst.search(12)); // Should return true
+console.log("Searching for 10:", bst.search(10)); // Should return false

@@ -1,0 +1,287 @@
+A) Write a Java Program to display all the employee names whose initial character is A
+---------------------------------------------------------------------------------------------
+
+import java.util.ArrayList;
+
+public class EmployeeNamesWithA {
+
+    public static void main(String[] args) {
+        
+        ArrayList<String> employeeNames = new ArrayList<>();
+        employeeNames.add("Alice");
+        employeeNames.add("Bob");
+        employeeNames.add("Anna");
+        employeeNames.add("John");
+        employeeNames.add("Alex");
+        System.out.println("Employee names starting with 'A':");
+        displayNamesStartingWithA(employeeNames);
+    }
+
+    private static void displayNamesStartingWithA(ArrayList<String> names) {
+        for (String name : names) {
+            if (name.toUpperCase().charAt(0) == 'A') {
+                System.out.println(name);
+            }
+        }
+    }
+}
+
+
+
+
+singly linkedlist
+-------------------------------------------------------------------------------------------------
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class SinglyLinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.size = 0;
+  }
+
+  append(data) {
+    const newNode = new Node(data);
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+    this.size++;
+  }
+
+  insertAt(data, index) {
+    if (index < 0 || index > this.size) {
+      return null;
+    }
+    const newNode = new Node(data);
+    if (index === 0) {
+      newNode.next = this.head;
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      let previous;
+      let i = 0;
+      while (i < index) {
+        previous = current;
+        current = current.next;
+        i++;
+      }
+      newNode.next = current;
+      previous.next = newNode;
+    }
+    this.size++;
+  }
+
+  removeAt(index) {
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+    let current = this.head;
+    if (index === 0) {
+      this.head = current.next;
+    } else {
+      let previous;
+      let i = 0;
+      while (i < index) {
+        previous = current;
+        current = current.next;
+        i++;
+      }
+      previous.next = current.next;
+      if (index === this.size - 1) {
+        this.tail = previous;
+      }
+    }
+    this.size--;
+    return current.data;
+  }
+
+  indexOf(data) {
+    let current = this.head;
+    let index = 0;
+    while (current) {
+      if (current.data === data) {
+        return index;
+      }
+      current = current.next;
+      index++;
+    }
+    return -1;
+  }
+
+  isEmpty() {
+    return this.size === 0;
+  }
+
+  getSize() {
+    return this.size;
+  }
+
+  printList() {
+    let current = this.head;
+    let result = "";
+    while (current) {
+      result += current.data + " -> ";
+      current = current.next;
+    }
+    console.log(result + "null");
+  }
+}
+
+const linkedList = new SinglyLinkedList();
+linkedList.append(10);
+linkedList.append(20);
+linkedList.append(30);
+linkedList.printList();
+
+linkedList.insertAt(15, 1);
+linkedList.printList();
+
+linkedList.removeAt(2);
+linkedList.printList();
+
+console.log("Index of 15:", linkedList.indexOf(15));
+console.log("Size of the list:", linkedList.getSize());
+
+
+----------------------------------------
+
+
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
+class DoublyLinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.size = 0;
+  }
+
+  append(data) {
+    const newNode = new Node(data);
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      newNode.prev = this.tail;
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+    this.size++;
+  }
+
+  insertAt(data, index) {
+    if (index < 0 || index > this.size) {
+      return null;
+    }
+    const newNode = new Node(data);
+    if (index === 0) {
+      newNode.next = this.head;
+      if (this.head) {
+        this.head.prev = newNode;
+      }
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      let i = 0;
+      while (i < index) {
+        current = current.next;
+        i++;
+      }
+      newNode.prev = current.prev;
+      newNode.next = current;
+      current.prev.next = newNode;
+      current.prev = newNode;
+    }
+    this.size++;
+  }
+
+  removeAt(index) {
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+    let current = this.head;
+    if (index === 0) {
+      this.head = current.next;
+      if (this.head) {
+        this.head.prev = null;
+      }
+    } else if (index === this.size - 1) {
+      current = this.tail;
+      this.tail = current.prev;
+      this.tail.next = null;
+    } else {
+      let i = 0;
+      while (i < index) {
+        current = current.next;
+        i++;
+      }
+      current.prev.next = current.next;
+      current.next.prev = current.prev;
+    }
+    this.size--;
+    return current.data;
+  }
+
+  indexOf(data) {
+    let current = this.head;
+    let index = 0;
+    while (current) {
+      if (current.data === data) {
+        return index;
+      }
+      current = current.next;
+      index++;
+    }
+    return -1;
+  }
+
+  isEmpty() {
+    return this.size === 0;
+  }
+
+  getSize() {
+    return this.size;
+  }
+
+  printList() {
+    let current = this.head;
+    let result = "";
+    while (current) {
+      result += current.data + " <-> ";
+      current = current.next;
+    }
+    console.log(result + "null");
+  }
+}
+
+
+const doublyLinkedList = new DoublyLinkedList();
+doublyLinkedList.append(10);
+doublyLinkedList.append(20);
+doublyLinkedList.append(30);
+doublyLinkedList.printList();
+
+doublyLinkedList.insertAt(15, 1);
+doublyLinkedList.printList();
+
+doublyLinkedList.removeAt(2);
+doublyLinkedList.printList();
+
+console.log("Index of 15:", doublyLinkedList.indexOf(15));
+console.log("Size of the list:", doublyLinkedList.getSize());
+
+

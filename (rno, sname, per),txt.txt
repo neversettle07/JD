@@ -1,0 +1,80 @@
+
+A)Write a Java program to display first record from student table (rno, sname, per)
+onto the TextFields by clicking on button (Assume Student table is already created)
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+B) Demonstration of Circular Queue
+
+class CircularQueue {
+  constructor(size) {
+    this.queue = new Array(size);
+    this.front = this.rear = -1;
+    this.size = size;
+  }
+
+  enqueue(item) {
+    if ((this.rear + 1) % this.size === this.front) {
+      console.log("Queue is full. Cannot enqueue.");
+    } else if (this.front === -1) {
+      this.front = this.rear = 0;
+      this.queue[this.rear] = item;
+    } else {
+      this.rear = (this.rear + 1) % this.size;
+      this.queue[this.rear] = item;
+    }
+  }
+
+  dequeue() {
+    if (this.front === -1) {
+      console.log("Queue is empty. Cannot dequeue.");
+      return undefined;
+    }
+
+    let removedItem = this.queue[this.front];
+    if (this.front === this.rear) {
+      this.front = this.rear = -1;
+    } else {
+      this.front = (this.front + 1) % this.size;
+    }
+
+    return removedItem;
+  }
+
+  display() {
+    if (this.front === -1) {
+      console.log("Queue is empty.");
+    } else {
+      let i = this.front;
+      while (true) {
+        console.log(this.queue[i]);
+        if (i === this.rear) break;
+        i = (i + 1) % this.size;
+      }
+    }
+  }
+}
+
+// Example usage:
+const cq = new CircularQueue(5);
+
+cq.enqueue(1);
+cq.enqueue(2);
+cq.enqueue(3);
+cq.display(); // Output: 1 2 3
+
+cq.dequeue();
+cq.display(); // Output: 2 3
+
+cq.enqueue(4);
+cq.enqueue(5);
+cq.enqueue(6); // This will print "Queue is full. Cannot enqueue."
+
+cq.dequeue();
+cq.dequeue();
+cq.dequeue();
+cq.display(); // Output: Queue is empty.

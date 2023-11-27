@@ -1,0 +1,198 @@
+
+A) Design an application by using array that uses any five array utility functions.
+
+-------------------------------------------
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class StudentManagementApp {
+    private static final int MAX_STUDENTS = 100;
+    private String[] students;
+    private int totalStudents;
+
+    public StudentManagementApp() {
+        this.students = new String[MAX_STUDENTS];
+        this.totalStudents = 0;
+    }
+
+    public void addStudent(String name) {
+        if (totalStudents < MAX_STUDENTS) {
+            students[totalStudents++] = name;
+            System.out.println("Student added: " + name);
+        } else {
+            System.out.println("Cannot add more students. Maximum limit reached.");
+        }
+    }
+
+    public void displayStudents() {
+        if (totalStudents > 0) {
+            System.out.println("List of Students:");
+            for (int i = 0; i < totalStudents; i++) {
+                System.out.println((i + 1) + ". " + students[i]);
+            }
+        } else {
+            System.out.println("No students in the list.");
+        }
+    }
+
+    public void searchStudent(String name) {
+        int index = Arrays.binarySearch(students, 0, totalStudents, name);
+        if (index >= 0) {
+            System.out.println("Student found at position " + (index + 1));
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    public void updateStudent(String oldName, String newName) {
+        int index = Arrays.binarySearch(students, 0, totalStudents, oldName);
+        if (index >= 0) {
+            students[index] = newName;
+            System.out.println("Student updated successfully.");
+        } else {
+            System.out.println("Student not found. Update failed.");
+        }
+    }
+
+    public void deleteStudent(String name) {
+        int index = Arrays.binarySearch(students, 0, totalStudents, name);
+        if (index >= 0) {
+            System.arraycopy(students, index + 1, students, index, totalStudents - index - 1);
+            totalStudents--;
+            System.out.println("Student deleted successfully.");
+        } else {
+            System.out.println("Student not found. Deletion failed.");
+        }
+    }
+
+    public static void main(String[] args) {
+        StudentManagementApp studentApp = new StudentManagementApp();
+        Scanner scanner = new Scanner(System.in);
+
+        int choice;
+        do {
+            System.out.println("\nStudent Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Display Students");
+            System.out.println("3. Search Student");
+            System.out.println("4. Update Student");
+            System.out.println("5. Delete Student");
+            System.out.println("0. Exit");
+
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student name: ");
+                    String newStudent = scanner.nextLine();
+                    studentApp.addStudent(newStudent);
+                    break;
+                case 2:
+                    studentApp.displayStudents();
+                    break;
+                case 3:
+                    System.out.print("Enter student name to search: ");
+                    String searchStudent = scanner.nextLine();
+                    studentApp.searchStudent(searchStudent);
+                    break;
+                case 4:
+                    System.out.print("Enter student name to update: ");
+                    String oldName = scanner.nextLine();
+                    System.out.print("Enter new student name: ");
+                    String newName = scanner.nextLine();
+                    studentApp.updateStudent(oldName, newName);
+                    break;
+                case 5:
+                    System.out.print("Enter student name to delete: ");
+                    String deleteStudent = scanner.nextLine();
+                    studentApp.deleteStudent(deleteStudent);
+                    break;
+                case 0:
+                    System.out.println("Exiting Student Management System. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        } while (choice != 0);
+
+        scanner.close();
+    }
+}
+
+
+
+------------------------------------------------------------------------------------
+B) Reverse stack using queue
+=======================================================
+
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(element) {
+    this.items.push(element);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return "Underflow";
+    }
+    return this.items.pop();
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(element) {
+    this.items.push(element);
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      return "Underflow";
+    }
+    return this.items.shift();
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+
+function reverseStack(stack) {
+  const queue = new Queue();
+
+  // Step 1: Push all elements from stack to queue
+  while (!stack.isEmpty()) {
+    queue.enqueue(stack.pop());
+  }
+
+  // Step 2: Pop elements from queue and push them back to stack
+  while (!queue.isEmpty()) {
+    stack.push(queue.dequeue());
+  }
+}
+
+// Example usage:
+const stack = new Stack();
+
+stack.push(1);
+stack.push(2);
+stack.push(3);
+stack.push(4);
+
+console.log("Original Stack:", stack.items);
+
+reverseStack(stack);
+
+console.log("Reversed Stack:", stack.items);

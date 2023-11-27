@@ -1,0 +1,96 @@
+Write java program to check given number is prime and generate exception if given number is 
+not prime.
+--------------------------------------------------------------------------------------------
+
+import java.util.Scanner;
+class NotPrimeException extends Exception {
+    public NotPrimeException(String message) {
+        super(message);
+    }
+}
+class PrimeNumberChecker {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a number: ");
+        int number = scanner.nextInt();
+
+        try {
+            checkPrime(number);
+            System.out.println(number + " is a prime number.");
+        } catch (NotPrimeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private static void checkPrime(int number) throws NotPrimeException {
+        if (number <= 1) {
+            throw new NotPrimeException("Prime numbers are greater than 1.");
+        }
+
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0) {
+                throw new NotPrimeException(number + " is not a prime number.");
+            }
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------
+
+
+
+STACK implementation using Array with PUSH, POP operations
+
+----------------------------------------------------------------
+
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(element) {
+    this.items.push(element);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return "Underflow: Stack is empty";
+    }
+    return this.items.pop();
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      return "Stack is empty";
+    }
+    return this.items[this.items.length - 1];
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  size() {
+    return this.items.length;
+  }
+  printStack() {
+    let result = "";
+    for (let i = 0; i < this.items.length; i++) {
+      result += this.items[i] + " ";
+    }
+    console.log(result);
+  }
+}
+const stack = new Stack();
+stack.push(10);
+stack.push(20);
+stack.push(30);
+console.log("Stack after push operations:");
+stack.printStack();
+console.log("Popped element:", stack.pop());
+console.log("Stack after pop operation:");
+stack.printStack();
+console.log("Top element:", stack.peek());
+
+

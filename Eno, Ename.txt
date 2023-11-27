@@ -1,0 +1,151 @@
+Write a Java Program to create an Emp (ENo, EName, Sal) table and insert record into it.
+(Use PreparedStatement Interface)
+---------------------------------------------------------------------------------------
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class EmployeeTableExample {
+    // JDBC URL, username, and password of MySQL server
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/your_database_name";
+    private static final String USERNAME = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    // JDBC variables for opening, closing, and managing connection
+    private static Connection connection;
+
+    public static void main(String[] args) {
+        try {
+            // Open a connection
+            connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            // Create a table 'Emp' if it does not exist
+            createEmployeeTable();
+
+            // Insert a record into the 'Emp' table
+            insertEmployeeRecord(101, "John Doe", 50000.0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the connection
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void createEmployeeTable() throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS Emp ("
+                + "ENo INT PRIMARY KEY,"
+                + "EName VARCHAR(255),"
+                + "Sal DOUBLE)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
+            // Execute the SQL statement to create the table
+            preparedStatement.execute();
+            System.out.println("Emp table created or already exists.");
+        }
+    }
+
+    private static void insertEmployeeRecord(int eNo, String eName, double sal) throws SQLException {
+        String insertRecordSQL = "INSERT INTO Emp (ENo, EName, Sal) VALUES (?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertRecordSQL)) {
+            // Set values for the placeholders
+            preparedStatement.setInt(1, eNo);
+            preparedStatement.setString(2, eName);
+            preparedStatement.setDouble(3, sal);
+
+            // Execute the SQL statement to insert the record
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Record inserted successfully.");
+            } else {
+                System.out.println("Failed to insert record.");
+            }
+        }
+    }
+}
+
+====================================================================================================================
+Demonstration of Linear Queue
+------------------------------------------------------------
+
+class LinearQueue {
+    constructor() {
+        this.queue = [];
+        this.front = 0; // Front of the queue
+        this.rear = -1; // Rear of the queue
+        this.maxSize = 5; // Maximum size of the queue (adjust as needed)
+    }
+
+    // Check if the queue is empty
+    isEmpty() {
+        return this.front > this.rear;
+    }
+
+    // Check if the queue is full
+    isFull() {
+        return this.rear === this.maxSize - 1;
+    }
+
+    // Add an element to the rear of the queue (enqueue)
+    enqueue(element) {
+        if (this.isFull()) {
+            console.log("Queue is full. Cannot enqueue element.");
+            return;
+        }
+
+        this.queue[++this.rear] = element;
+        console.log(`Enqueued: ${element}`);
+    }
+
+    // Remove and return an element from the front of the queue (dequeue)
+    dequeue() {
+        if (this.isEmpty()) {
+            console.log("Queue is empty. Cannot dequeue element.");
+            return null;
+        }
+
+        const dequeuedElement = this.queue[this.front++];
+        console.log(`Dequeued: ${dequeuedElement}`);
+        return dequeuedElement;
+    }
+
+    // Display the elements in the queue
+    displayQueue() {
+        if (this.isEmpty()) {
+            console.log("Queue is empty.");
+            return;
+        }
+
+        console.log("Queue elements:");
+        for (let i = this.front; i <= this.rear; i++) {
+            console.log(this.queue[i]);
+        }
+    }
+}
+
+// Example usage:
+const queue = new LinearQueue();
+
+queue.enqueue(10);
+queue.enqueue(20);
+queue.enqueue(30);
+queue.enqueue(40);
+
+queue.displayQueue();
+
+queue.dequeue();
+queue.dequeue();
+
+queue.displayQueue();

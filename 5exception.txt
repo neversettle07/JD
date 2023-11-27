@@ -1,0 +1,165 @@
+A) Test any five of standard exception and user Defined Custom Exceptions in java.
+
+CODE:
+class CustomException extends Exception {
+ public CustomException(String message) {
+     super(message);
+ }
+}
+
+public class ExceptionExample {
+ public static void main(String[] args) {
+     try {
+         // Example 1: ArithmeticException
+         int result = divideByZero(10, 0);
+
+         // Example 2: ArrayIndexOutOfBoundsException
+         int[] arr = {1, 2, 3};
+         accessArrayElement(arr, 5);
+
+         // Example 3: NullPointerException
+         String str = null;
+         printStringLength(str);
+
+         // Example 4: NumberFormatException
+         String strNum = "abc";
+         parseInteger(strNum);
+
+         // Example 5: FileNotFoundException (checked exception)
+         // Uncomment the line below to demonstrate a checked exception
+         // readFile("nonexistent.txt");
+
+         // Example 6: CustomException (User-defined custom exception)
+         throwCustomException();
+     } catch (ArithmeticException e) {
+         System.out.println("Caught ArithmeticException: " + e.getMessage());
+     } catch (ArrayIndexOutOfBoundsException e) {
+         System.out.println("Caught ArrayIndexOutOfBoundsException: " + e.getMessage());
+     } catch (NullPointerException e) {
+         System.out.println("Caught NullPointerException: " + e.getMessage());
+     } catch (NumberFormatException e) {
+         System.out.println("Caught NumberFormatException: " + e.getMessage());
+     } catch (CustomException e) {
+         System.out.println("Caught CustomException: " + e.getMessage());
+     } /*catch (FileNotFoundException e) {
+         System.out.println("Caught FileNotFoundException: " + e.getMessage());
+     }*/ catch (Exception e) {
+         // Catch any other exceptions
+         System.out.println("Caught Exception: " + e.getMessage());
+     }
+ }
+
+ // Example 1: ArithmeticException
+ private static int divideByZero(int numerator, int denominator) {
+     return numerator / denominator;
+ }
+
+ // Example 2: ArrayIndexOutOfBoundsException
+ private static void accessArrayElement(int[] arr, int index) {
+     int value = arr[index];
+     System.out.println("Array element at index " + index + ": " + value);
+ }
+
+ // Example 3: NullPointerException
+ private static void printStringLength(String str) {
+     System.out.println("String length: " + str.length());
+ }
+
+ // Example 4: NumberFormatException
+ private static void parseInteger(String str) {
+     int num = Integer.parseInt(str);
+     System.out.println("Parsed Integer: " + num);
+ }
+
+ // Example 5: FileNotFoundException (checked exception)
+ /*private static void readFile(String fileName) throws FileNotFoundException {
+     FileReader fileReader = new FileReader(fileName);
+ }*/
+
+ // Example 6: CustomException (User-defined custom exception)
+ private static void throwCustomException() throws CustomException {
+     throw new CustomException("This is a custom exception.");
+ }
+}
+
+
+
+
+
+
+-----------------------------------------------------------------------
+
+B] Implementation of Hashing
+
+Sorce Code:
+class HashTable {
+    constructor() {
+        this.table = new Array(10); // Size of the hash table
+    }
+
+    // Basic hash function (modulus operator)
+    hash(key) {
+        let hashValue = 0;
+        for (let i = 0; i < key.length; i++) {
+            hashValue += key.charCodeAt(i);
+        }
+        return hashValue % this.table.length;
+    }
+
+    // Insert key-value pair into the hash table
+    insert(key, value) {
+        const index = this.hash(key);
+
+        if (!this.table[index]) {
+            this.table[index] = [];
+        }
+
+        // Check for duplicate keys and update the value
+        for (let i = 0; i < this.table[index].length; i++) {
+            if (this.table[index][i][0] === key) {
+                this.table[index][i][1] = value;
+                return;
+            }
+        }
+
+        this.table[index].push([key, value]);
+    }
+
+    // Retrieve value based on key
+    get(key) {
+        const index = this.hash(key);
+
+        if (this.table[index]) {
+            for (let i = 0; i < this.table[index].length; i++) {
+                if (this.table[index][i][0] === key) {
+                    return this.table[index][i][1];
+                }
+            }
+        }
+
+        return undefined; // Key not found
+    }
+
+    // Remove key-value pair from the hash table
+    remove(key) {
+        const index = this.hash(key);
+
+        if (this.table[index]) {
+            this.table[index] = this.table[index].filter(entry => entry[0] !== key);
+        }
+    }
+}
+
+// Example usage
+const myHashTable = new HashTable();
+
+myHashTable.insert("name", "John");
+myHashTable.insert("age", 25);
+myHashTable.insert("city", "New York");
+
+console.log("Value for 'name':", myHashTable.get("name")); // John
+console.log("Value for 'age':", myHashTable.get("age")); // 25
+console.log("Value for 'city':", myHashTable.get("city")); // New York
+
+myHashTable.remove("age");
+console.log("Value for 'age' after removal:", myHashTable.get("age")); // undefined

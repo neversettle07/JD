@@ -1,0 +1,137 @@
+A] Design java application using Collection in java such as Array List, Link List
+
+code:
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+// Employee interface representing common features of employees
+interface Employee {
+    String getName();
+    double getSalary();
+}
+
+// FullTimeEmployee class implementing the Employee interface
+class FullTimeEmployee implements Employee {
+    private String name;
+    private double salary;
+
+    public FullTimeEmployee(String name, double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getSalary() {
+        return salary;
+    }
+}
+
+// PartTimeEmployee class implementing the Employee interface
+class PartTimeEmployee implements Employee {
+    private String name;
+    private double hourlyRate;
+
+    public PartTimeEmployee(String name, double hourlyRate) {
+        this.name = name;
+        this.hourlyRate = hourlyRate;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getSalary() {
+        // Assuming a part-time employee's salary is calculated based on hourly rate
+        return hourlyRate * 40; // 40 hours per week
+    }
+}
+
+// EmployeeManagement class to manage a list of employees using ArrayList and LinkedList
+class EmployeeManagement {
+    private List<Employee> employeeList;
+
+    public EmployeeManagement() {
+        // Using ArrayList to store employees
+        // If you want to use LinkedList, you can replace it with: employeeList = new LinkedList<>();
+        employeeList = new ArrayList<>();
+    }
+
+    public void addEmployee(Employee employee) {
+        employeeList.add(employee);
+    }
+
+    public void displayEmployeeDetails() {
+        System.out.println("Employee Details:");
+        for (Employee employee : employeeList) {
+            System.out.println("Name: " + employee.getName() + ", Salary: " + employee.getSalary());
+        }
+        System.out.println();
+    }
+}
+
+// Main class to test the program
+public class Main {
+    public static void main(String[] args) {
+        // Creating instances of FullTimeEmployee and PartTimeEmployee
+        Employee fullTimeEmployee = new FullTimeEmployee("John Doe", 50000);
+        Employee partTimeEmployee = new PartTimeEmployee("Jane Smith", 20);
+
+        // Creating an EmployeeManagement object and adding employees
+        EmployeeManagement employeeManagement = new EmployeeManagement();
+        employeeManagement.addEmployee(fullTimeEmployee);
+        employeeManagement.addEmployee(partTimeEmployee);
+
+        // Displaying the list of employees and their details
+        employeeManagement.displayEmployeeDetails();
+    }
+}
+
+
+
+-----------------------------------------------------------------------------------
+B] Practical based on Brute Force technique.
+
+
+
+
+function subsetSumBruteForce(arr, target) {
+    const n = arr.length;
+
+    // Generate all possible subsets
+    for (let i = 0; i < (1 << n); i++) {
+        let sum = 0;
+        let subset = [];
+
+        // Check each element to include in the subset
+        for (let j = 0; j < n; j++) {
+            if ((i & (1 << j)) !== 0) {
+                sum += arr[j];
+                subset.push(arr[j]);
+            }
+        }
+
+        // Check if the subset has the target sum
+        if (sum === target) {
+            console.log("Subset with the target sum found:", subset);
+            return true;
+        }
+    }
+
+    console.log("No subset with the target sum found.");
+    return false;
+}
+
+// Example usage
+const array = [1, 2, 3, 4, 5];
+const targetSum = 9;
+
+subsetSumBruteForce(array, targetSum);

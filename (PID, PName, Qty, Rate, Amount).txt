@@ -1,0 +1,125 @@
+-
+
+/Write a Java program to display sales details of Product (PID, PName, Qty, Rate, Amount) 
+//between two selected dates (Assume Sales table is already created)
+
+create database 
+CREATE TABLE `sales` (
+  `PID` varchar(200) DEFAULT NULL,
+  `PName` varchar(200) DEFAULT NULL,
+  `Qty` varchar(200) DEFAULT NULL,
+  `Rate` varchar(500) DEFAULT NULL,
+  `Amount` varchar(500) DEFAULT NULL,
+  `sale_date` date DEFAULT NULL
+)
+
+package JDBC_Programes;
+import java.sql.*;
+//import java.sql.Date;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.*;
+public class SalesDetail {
+	public static void main(String [] args) throws Exception{
+		Scanner sc=new Scanner(System.in);
+		System.out.print("Enter start date (yyyy-MM-dd): ");
+        String startDateStr = sc.nextLine();
+        System.out.print("Enter end date (yyyy-MM-dd): ");
+        String endDateStr = sc.nextLine();
+        
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate= dateFormat.parse(startDateStr);
+        Date endDate=dateFormat.parse(endDateStr);
+        displaySalesDetails(startDate,endDate);
+        
+        
+		
+	}
+	private static void displaySalesDetails(Date startDate, Date endDate) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/MCA"; // Replace with your database URL
+        String username = "root";
+        String password = "shivam";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String query = "SELECT PID, PName, Qty, Rate, Amount FROM sales WHERE sale_date BETWEEN ? AND ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setDate(1, new java.sql.Date(startDate.getTime()));
+                preparedStatement.setDate(2, new java.sql.Date(endDate.getTime()));
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    System.out.println("Sales details between " + startDate + " and " + endDate + ":");
+                    System.out.println("PID", "PName", "Qty", "Rate", "Amount");
+                    while (resultSet.next()) {
+                        int pid = resultSet.getInt("PID");
+                        String pname = resultSet.getString("PName");
+                        int qty = resultSet.getInt("Qty");
+                        double rate = resultSet.getDouble("Rate");
+                        double amount = resultSet.getDouble("Amount");
+
+                        System.out.printf("%-5s %-15s %-5s %-10s %-10s%n", pid, pname, qty, rate, amount);
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+Reverse a string using stack ( DSA )
+----------------------------------------
+
+
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(element) {
+    this.items.push(element);
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      return null;
+    }
+    return this.items.pop();
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  size() {
+    return this.items.length;
+  }
+}
+
+function reverseString(inputString) {
+  const stack = new Stack();
+
+  // Push each character of the string onto the stack
+  for (let i = 0; i < inputString.length; i++) {
+    stack.push(inputString[i]);
+  }
+
+  let reversedString = '';
+
+  
+  while (!stack.isEmpty()) {
+    reversedString += stack.pop();
+  }
+
+  return reversedString;
+}
+
+
+const originalString = "Hello, World!";
+const reversedString = reverseString(originalString);
+
+console.log("Original String: " + originalString);
+console.log("Reversed String: " + reversedString);

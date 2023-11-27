@@ -1,0 +1,102 @@
+A] Write java Program to Find the area of Rectangle and Circle using Method Overriding
+
+Source code:
+// Shape class is the base class
+class Shape {
+    // Method to calculate area
+    public double calculateArea() {
+        return 0.0; // Default implementation for the base class
+    }
+}
+
+// Rectangle class inherits from Shape
+class Rectangle extends Shape {
+    // Fields
+    private double length;
+    private double width;
+
+    // Constructor
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    // Method overriding to calculate the area of rectangle
+    @Override
+    public double calculateArea() {
+        return length * width;
+    }
+}
+
+// Circle class inherits from Shape
+class Circle extends Shape {
+    // Field
+    private double radius;
+
+    // Constructor
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    // Method overriding to calculate the area of circle
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+// Main class to test the program
+public class Main {
+    public static void main(String[] args) {
+        // Creating objects of Rectangle and Circle
+        Shape rectangle = new Rectangle(5.0, 3.0);
+        Shape circle = new Circle(2.5);
+
+        // Calculating and displaying the area of rectangle
+        System.out.println("Area of Rectangle: " + rectangle.calculateArea());
+
+        // Calculating and displaying the area of circle
+        System.out.println("Area of Circle: " + circle.calculateArea());
+    }
+}
+
+
+---------------------------------------------------------------------------------------------------------------
+
+B] Practical based on Divide and Conquer Technique-Binary Search
+
+
+function binarySearch(arr, target) {
+    let low = 0;
+    let high = arr.length - 1;
+
+    while (low <= high) {
+        // Find the middle index
+        let mid = Math.floor((low + high) / 2);
+
+        // Check if the target is at the middle
+        if (arr[mid] === target) {
+            return mid; // Target found, return the index
+        } else if (arr[mid] < target) {
+            // If target is greater, ignore the left half
+            low = mid + 1;
+        } else {
+            // If target is smaller, ignore the right half
+            high = mid - 1;
+        }
+    }
+
+    return -1; // Target not found
+}
+
+// Example usage:
+const sortedArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const targetValue = 7;
+
+const result = binarySearch(sortedArray, targetValue);
+
+if (result !== -1) {
+    console.log(`Element ${targetValue} found at index ${result}`);
+} else {
+    console.log(`Element ${targetValue} not found in the array`);
+}

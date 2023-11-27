@@ -1,0 +1,144 @@
+Write a Java Program to delete details of students whose initial character of their name is ‘S’
+--------------------------------------------------------------------------------------------------
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+class Student {
+    String name;
+    int id;
+
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+}
+
+public class StudentDeletion {
+    public static void main(String[] args) {
+        // Creating a list of students
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(new Student("John", 1));
+        studentList.add(new Student("Sarah", 2));
+        studentList.add(new Student("Sam", 3));
+        studentList.add(new Student("Alice", 4));
+        studentList.add(new Student("Steve", 5));
+
+        // Displaying the original list
+        System.out.println("Original Student List:");
+        displayStudentList(studentList);
+
+        // Deleting students whose names start with 'S'
+        deleteStudentsWithS(studentList, 'S');
+
+        // Displaying the updated list
+        System.out.println("\nUpdated Student List after deletion:");
+        displayStudentList(studentList);
+    }
+
+    private static void deleteStudentsWithS(List<Student> studentList, char startingChar) {
+        Iterator<Student> iterator = studentList.iterator();
+
+        while (iterator.hasNext()) {
+            Student student = iterator.next();
+            if (student.name.startsWith(String.valueOf(startingChar))) {
+                iterator.remove(); // Removing the student whose name starts with 'S'
+            }
+        }
+    }
+
+    private static void displayStudentList(List<Student> studentList) {
+        for (Student student : studentList) {
+            System.out.println("ID: " + student.id + ", Name: " + student.name);
+        }
+    }
+}
+-----------------------------------------------
+
+Implement Stack using Linked List
+--------------------------------------------------
+
+
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class Stack {
+    constructor() {
+        this.top = null;
+        this.size = 0;
+    }
+
+    isEmpty() {
+        return this.size === 0;
+    }
+
+    push(data) {
+        const newNode = new Node(data);
+        newNode.next = this.top;
+        this.top = newNode;
+        this.size++;
+    }
+
+    pop() {
+        if (this.isEmpty()) {
+            console.log("Stack is empty. Cannot pop from an empty stack.");
+            return null;
+        }
+
+        const poppedData = this.top.data;
+        this.top = this.top.next;
+        this.size--;
+
+        return poppedData;
+    }
+
+    peek() {
+        if (this.isEmpty()) {
+            console.log("Stack is empty. Cannot peek into an empty stack.");
+            return null;
+        }
+
+        return this.top.data;
+    }
+
+    printStack() {
+        let current = this.top;
+        while (current) {
+            console.log(current.data);
+            current = current.next;
+        }
+    }
+}
+
+// Example usage:
+const stack = new Stack();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+console.log("Stack after pushes:");
+stack.printStack();
+
+console.log("Popped element:", stack.pop());
+
+console.log("Stack after pop:");
+stack.printStack();
+
+console.log("Peeked element:", stack.peek());
+
+
+
+
+
+
+
+
+
+
+
